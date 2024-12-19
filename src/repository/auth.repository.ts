@@ -2,8 +2,10 @@ import { IRepository } from "../interface/repository.interace";
 import {Admin} from "../interface/admin.interface"
 import { PrismaService } from "../service/database";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
+import config from "../config/config";
 
-export class AuthRepository implements IRepository{
+export class AuthRepository implements IRepository<Admin>{
 
     private prisma: PrismaService
 
@@ -11,8 +13,19 @@ export class AuthRepository implements IRepository{
         this.prisma = prisma
     }
     
-   async create(data: Admin): Promise<Admin> {
+   async create(data: Admin): Promise<Admin | {message : string}> {
         try {
+
+
+            const emailChecker = await this.prisma.client.admin.findFirst({
+                where : {
+                    email : data.email
+                }
+            })
+
+            if(emailChecker){
+                return ({message : "This email already exists!"})
+            }
 
             const hashedPassword = await bcrypt.hash(data.password,10) 
 
@@ -21,12 +34,43 @@ export class AuthRepository implements IRepository{
                 password : hashedPassword
             }
 
-            return await this.prisma.client.admin.create({
+            const admin = await this.prisma.client.admin.create({
                 data : input
             })
+            return admin 
         } catch (error : any) {
             console.log(`Error Occurred in Database Layet : ${error}`)
-            return error 
+            return {message : error} 
+        }
+    }
+    async find(data: Admin): Promise<Admin | { message: string; }> {
+        try {
+
+            const emailChecker = await this.prisma.client.admin.findFirst({
+                where : {
+                    email : data.email
+                }
+            })
+
+            if(!emailChecker){
+                return ({message : "Invalid email!"})
+            }
+
+            const passwordChecker = await bcrypt.compare(data.password,emailChecker.password)
+
+            if(!passwordChecker){
+                return ({message : "Invalid password!"})
+            }
+
+            const secretKey = config.JWT_SECRET as string
+
+            const token = jwt.sign({ email: data.email, id: emailChecker.id }, secretKey, { expiresIn: "30m" });
+
+            return {message : token}
+            
+        } catch (error : any) {
+            console.log(`Error occured in Repository Layer : ${error}`)
+            return error
         }
     }
 }
