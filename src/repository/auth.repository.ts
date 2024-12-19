@@ -78,15 +78,12 @@ export class AuthRepository implements IRepository<Admin>{
 
     async verifyToken(data : string): Promise<any> {
         try {
+
             const secretKey = config.JWT_SECRET as string
 
             const decoded =  jwt.verify(data,secretKey)
 
-            if(!decoded){
-                return ({message : "Token invalid"})
-            }
-            
-            return decoded as string[]
+            return decoded
 
         } catch (error : any) {
             return ({
