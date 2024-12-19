@@ -3,7 +3,7 @@ import {Admin} from "../interface/admin.interface"
 import { PrismaService } from "../service/database";
 import bcrypt from "bcrypt";
 
-export class AuthRepository implements IRepository{
+export class AuthRepository implements IRepository<Admin>{
 
     private prisma: PrismaService
 
@@ -11,8 +11,19 @@ export class AuthRepository implements IRepository{
         this.prisma = prisma
     }
     
-   async create(data: Admin): Promise<Admin> {
+   async create(data: Admin): Promise<Admin | {message : string}> {
         try {
+
+
+            const emailChecker = await this.prisma.client.admin.findFirst({
+                where : {
+                    email : data.email
+                }
+            })
+
+            if(emailChecker){
+                return ({message : "This email already exists!"})
+            }
 
             const hashedPassword = await bcrypt.hash(data.password,10) 
 
@@ -21,12 +32,13 @@ export class AuthRepository implements IRepository{
                 password : hashedPassword
             }
 
-            return await this.prisma.client.admin.create({
+            const admin = await this.prisma.client.admin.create({
                 data : input
             })
+            return admin 
         } catch (error : any) {
             console.log(`Error Occurred in Database Layet : ${error}`)
-            return error 
+            return {message : error} 
         }
     }
 }
