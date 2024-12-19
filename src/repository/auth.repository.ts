@@ -16,7 +16,6 @@ export class AuthRepository implements IRepository<Admin>{
    async create(data: Admin): Promise<Admin | {message : string}> {
         try {
 
-
             const emailChecker = await this.prisma.client.admin.findFirst({
                 where : {
                     email : data.email
