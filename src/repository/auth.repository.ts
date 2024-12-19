@@ -75,4 +75,24 @@ export class AuthRepository implements IRepository<Admin>{
             return {message : error}
         }
     }
+
+    async verifyToken(data : string): Promise<any> {
+        try {
+            const secretKey = config.JWT_SECRET as string
+
+            const decoded =  jwt.verify(data,secretKey)
+
+            if(!decoded){
+                return ({message : "Token invalid"})
+            }
+            
+            return decoded as string[]
+
+        } catch (error : any) {
+            return ({
+                error : error ,
+                message : "Invalid token or verification failed."
+            })
+        }
+    }
 }

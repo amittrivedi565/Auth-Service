@@ -15,6 +15,7 @@ const interactor = new AuthInteractor(repository)
 const controller = new AuthController(interactor)
 
 router.get("/login",login.loginValidation,controller.loginController.bind(controller))
+router.get("/verify-token",controller.verifyTokenController.bind(controller))
 router.post("/register",register.registerValidation,controller.registerController.bind(controller))
 
 export default router
