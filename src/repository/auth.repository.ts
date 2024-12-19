@@ -37,8 +37,10 @@ export class AuthRepository implements IRepository<Admin>{
                 data : input
             })
             return admin 
+            
         } catch (error : any) {
-            console.log(`Error occurred in Database Layet : ${error}`)
+
+            console.log(`Error occurred in Database Layer : ${error}`)
             return {message : error} 
         }
     }
@@ -68,8 +70,9 @@ export class AuthRepository implements IRepository<Admin>{
             return {message : token}
             
         } catch (error : any) {
+
             console.log(`Error occurred in Repository Layer : ${error}`)
-            return error
+            return {message : error}
         }
     }
 }

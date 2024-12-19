@@ -23,10 +23,8 @@ export class AuthInteractor implements IInteractor{
         try {
             return await this.repository.find(input)
         } catch (error : any) {
-            
             console.log(`Error occurred in Interactor Layer : ${error}`)
-            
-            return error
+            return {message : error}
         }
     }
 }
