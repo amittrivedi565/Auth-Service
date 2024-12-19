@@ -18,4 +18,15 @@ export class AuthInteractor implements IInteractor{
             return {message : error}
         }
     }
+
+    async loginInteractor(input: Admin): Promise<Admin | { message: string; }> {
+        try {
+            return await this.repository.find(input)
+        } catch (error : any) {
+            
+            console.log(`Error occured in Interactor Layer : ${error}`)
+            
+            return error
+        }
+    }
 }

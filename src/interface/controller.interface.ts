@@ -3,4 +3,5 @@ import {Request , Response} from "express"
 
 export interface IController{
     registerController(req : Request , res : Response) : Promise<Admin>
+    loginController(req : Request , res : Response) : Promise<Admin>
 }

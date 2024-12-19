@@ -11,6 +11,7 @@ const repository = new AuthRepository(prisma)
 const interactor = new AuthInteractor(repository)
 const controller = new AuthController(interactor)
 
+router.get("/login",controller.loginController.bind(controller))
 router.post("/register",controller.registerController.bind(controller))
 
 export default router
