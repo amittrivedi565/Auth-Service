@@ -14,7 +14,7 @@ export class AuthInteractor implements IInteractor{
         try {
             return await this.repository.create(input)
         } catch (error : any) {
-            console.log(`Error occured in Interactor Layer : ${error}`)
+            console.log(`Error occurred in Interactor Layer : ${error}`)
             return {message : error}
         }
     }
@@ -24,7 +24,7 @@ export class AuthInteractor implements IInteractor{
             return await this.repository.find(input)
         } catch (error : any) {
             
-            console.log(`Error occured in Interactor Layer : ${error}`)
+            console.log(`Error occurred in Interactor Layer : ${error}`)
             
             return error
         }

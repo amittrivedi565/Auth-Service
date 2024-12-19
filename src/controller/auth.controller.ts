@@ -20,7 +20,7 @@ export class AuthController implements IController {
 
       res.status(200).json(registerAdmin);
     } catch (error: any) {
-      console.log(`Error occured in Controller Layer : ${error}`);
+      console.log(`Error occurred in Controller Layer : ${error}`);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
@@ -35,7 +35,7 @@ export class AuthController implements IController {
 
       res.status(200).json(loginAdmin);
     } catch (error: any) {
-      console.log(`Error occured in Controller Layer : ${error}`);
+      console.log(`Error occurred in Controller Layer : ${error}`);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }

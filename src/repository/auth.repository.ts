@@ -38,7 +38,7 @@ export class AuthRepository implements IRepository<Admin>{
             })
             return admin 
         } catch (error : any) {
-            console.log(`Error Occurred in Database Layet : ${error}`)
+            console.log(`Error occurred in Database Layet : ${error}`)
             return {message : error} 
         }
     }
@@ -60,7 +60,7 @@ export class AuthRepository implements IRepository<Admin>{
             if(!passwordChecker){
                 return ({message : "Invalid password!"})
             }
-
+            
             const secretKey = config.JWT_SECRET as string
 
             const token = jwt.sign({ email: data.email, id: emailChecker.id }, secretKey, { expiresIn: "30m" });
@@ -68,7 +68,7 @@ export class AuthRepository implements IRepository<Admin>{
             return {message : token}
             
         } catch (error : any) {
-            console.log(`Error occured in Repository Layer : ${error}`)
+            console.log(`Error occurred in Repository Layer : ${error}`)
             return error
         }
     }
